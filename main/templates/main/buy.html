@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <h1>Ticket order</h1>
+        <form method="POST" action="{% url 'buy'  %}">
+            {% csrf_token %}
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Movie</th>
+                    <th>Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Hall</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    {% for movie in scheduled.all %}
+                        <td>{{ movie.movie }}</td>
+                        <td>{{ movie.date }}</td>
+                        <td>{{ movie.start_time }}</td>
+                        <td>{{ movie.end_time }}</td>
+                        <td>{{ movie.hall }}</td>
+                    {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+
+            <button type="submit" class="btn btn-primary">Continue</button>
+        </form>
+    </div>
+
+{% endblock %}

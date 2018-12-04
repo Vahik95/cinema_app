@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Ticket order</h1>
+    <form method="POST" action="{% url 'add_movie' %}">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="sel1">Movie:</label>
+          <select class="form-control" id="sel1" name="name">
+            {% for movie in films.all %}
+                <option>{{ movie.name}}</option>
+            {% endfor %}
+          </select>
+        <label for="sel1">Hall:</label>
+         <select class="form-control" id="sel1" name="hall">
+            {% for hall in halls.all %}
+                <option>{{ hall.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <label for="sel1">Time:</label>
+         <select class="form-control" id="sel1" name="time">
+            {% for time in time.all %}
+                <option>{{ time.time}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Continue</button>
+    </form>
+</div>
+{% endblock %}
