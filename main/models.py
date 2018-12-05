@@ -23,16 +23,6 @@ class Hall(models.Model):
         return beautified
 
 
-class Seat(models.Model):
-    hall_id = models.ForeignKey(Hall, on_delete=models.CASCADE)
-    row = models.IntegerField(null=True)
-    seat = models.IntegerField(null=True)
-
-    def __str__(self):
-        beautified = '  |  '.join([str(self.row), str(self.seat)])
-        return beautified
-
-
 class Schedule(models.Model):
     movie = models.ForeignKey(Movies)
     hall = models.ForeignKey(Hall)
@@ -53,8 +43,19 @@ class Order(models.Model):
     timestamp = models.TimeField(default=datetime.date.today())
 
 
+class Seat(models.Model):
+    hall_id = models.ForeignKey(Hall, on_delete=models.CASCADE)
+    row = models.IntegerField(null=True)
+    seat = models.IntegerField(null=True)
+
+    def __str__(self):
+        beautified = '  |  '.join([str(self.row), str(self.seat)])
+        return beautified
+
+
 class OrderedSeats(models.Model):
     order_id = models.ForeignKey(Order, null=True)
+    schedule_id = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
     seat = models.ForeignKey(Seat, null=True)
 
 

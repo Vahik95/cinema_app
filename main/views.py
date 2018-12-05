@@ -16,6 +16,13 @@ def buy(request, schedule_id):
         return render(request, 'main/buy.html', {'scheduled': scheduled, 'schedule_id': schedule_id})
 
 
+def check(request, schedule_id):
+    if request.method == 'POST':
+        scheduled = Schedule.objects.filter(pk=schedule_id)
+        checks = request.POST.getlist('checks')
+        return render(request, 'main/check.html', {'scheduled': scheduled, 'schedule_id': schedule_id, 'checks': checks})
+
+
 def seat_select(request):
     pass
 
