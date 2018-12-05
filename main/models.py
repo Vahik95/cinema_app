@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 
 class Movies(models.Model):
@@ -38,8 +39,25 @@ class Schedule(models.Model):
     start_time = models.TimeField(null=True)
     end_time = models.TimeField(null=True)
     date = models.DateField(null=True)
+    price = models.DecimalField(max_digits=6, decimal_places=0, null=True)
 
     def __str__(self):
         beautified = '  |  '.join([str(self.movie), str(self.hall), str(self.start_time),
                                    str(self.end_time), str(self.date)])
         return beautified
+
+
+class Order(models.Model):
+    schedule_id = models.ForeignKey(Schedule, null=True)
+    quantity = models.IntegerField(null=True)
+    timestamp = models.TimeField(default=datetime.date.today())
+
+
+class OrderedSeats(models.Model):
+    order_id = models.ForeignKey(Order, null=True)
+    seat = models.ForeignKey(Seat, null=True)
+
+
+class Tickets(models.Model):
+    order_id = models.ForeignKey(Order, null=True)
+

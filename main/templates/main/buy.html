@@ -4,7 +4,7 @@
 
     <div class="container">
         <h1>Ticket order</h1>
-        <form method="POST" action="{% url 'buy'  %}">
+        <form method="POST" action="{% url 'buy' schedule_id %}">
             {% csrf_token %}
 
             <table class="table table-bordered">
@@ -15,6 +15,7 @@
                     <th>Start Time</th>
                     <th>End Time</th>
                     <th>Hall</th>
+                    <th>Price</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -25,6 +26,7 @@
                         <td>{{ movie.start_time }}</td>
                         <td>{{ movie.end_time }}</td>
                         <td>{{ movie.hall }}</td>
+                        <td>{{ movie.price }}</td>
                     {% endfor %}
                 </tr>
                 </tbody>
@@ -33,5 +35,4 @@
             <button type="submit" class="btn btn-primary">Continue</button>
         </form>
     </div>
-
 {% endblock %}

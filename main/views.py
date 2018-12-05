@@ -1,5 +1,5 @@
-from django.shortcuts import render,  get_object_or_404
-from .models import Schedule, Movies, Hall
+from django.shortcuts import render, get_object_or_404
+from .models import Schedule, Movies, Hall, Seat
 from django.contrib.auth.decorators import login_required
 
 
@@ -10,14 +10,18 @@ def movies(request):
 
 def buy(request, schedule_id):
     if request.method == 'POST':
-        return render(request, 'main/buy_final.html')
+        return render(request, 'main/buy_final.html', {'schedule_id': schedule_id})
     else:
         scheduled = Schedule.objects.filter(pk=schedule_id)
-        return render(request, 'main/buy.html', {'scheduled': scheduled})
+        return render(request, 'main/buy.html', {'scheduled': scheduled, 'schedule_id': schedule_id})
+
+
+def seat_select(request):
+    pass
 
 
 def now_showing(request):
-    scheduled = Schedule.objects.all()
+    scheduled = Schedule.objects.all().order_by('date')
     return render(request, 'main/now_showing.html', {'scheduled': scheduled})
 
 
