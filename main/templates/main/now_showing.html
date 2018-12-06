@@ -3,45 +3,45 @@
 {% block content %}
 
 <div class="container">
-    <br><br>
-    <input class="form-control" id="myInput" type="text" placeholder="Search.."><br>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Movie</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Date</th>
-                <th>Buy</th>
-            </tr>
-        </thead>
-        <tbody id="myTable">
+  <br><br>
+  <input class="form-control" id="myInput" type="text" placeholder="Search.."><br>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Movie</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Date</th>
+        <th>Buy</th>
+      </tr>
+    </thead>
+    <tbody id="myTable">
 
-        {% for movie in scheduled.all %}
+      {% for movie in scheduled.all %}
 
-        <tr>
-            <td>{{ movie.movie}}</td>
-            <td>{{ movie.start_time }}</td>
-            <td>{{ movie.end_time }}</td>
-            <td>{{ movie.date }}</td>
-            <td><a href="{% url 'buy' movie.id %}" class="btn btn-success">Buy a ticket</a></td>
-        </tr>
+      <tr>
+        <td>{{ movie.movie}}</td>
+        <td>{{ movie.start_time }}</td>
+        <td>{{ movie.end_time }}</td>
+        <td>{{ movie.date }}</td>
+        <td><a href="{% url 'buy' movie.id %}" class="btn btn-success">Buy a ticket</a></td>
+      </tr>
 
-        {% endfor %}
+      {% endfor %}
 
-        </tbody>
-    </table>
+    </tbody>
+  </table>
 
-    <script>
-        $(document).ready(function(){
-          $("#myInput").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function() {
-              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-          });
+  <script>
+    $(document).ready(function() {
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
-    </script>
+      });
+    });
+  </script>
 
 </div>
 

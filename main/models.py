@@ -19,8 +19,7 @@ class Hall(models.Model):
     capacity = models.IntegerField(null=True)
 
     def __str__(self):
-        beautified = '  |  '.join([self.name, str(self.capacity)])
-        return beautified
+        return self.name
 
 
 class Schedule(models.Model):
@@ -37,12 +36,6 @@ class Schedule(models.Model):
         return beautified
 
 
-class Order(models.Model):
-    schedule_id = models.ForeignKey(Schedule, null=True)
-    quantity = models.IntegerField(null=True)
-    timestamp = models.TimeField(default=datetime.date.today())
-
-
 class Seat(models.Model):
     hall_id = models.ForeignKey(Hall, on_delete=models.CASCADE)
     row = models.IntegerField(null=True)
@@ -53,12 +46,21 @@ class Seat(models.Model):
         return beautified
 
 
+class Customers(models.Model):
+    email =  models.TextField(max_length=50, null=True)
+    phone_number = models.TextField(max_length=15, null=True)
+
+
+class Order(models.Model):
+    customer_id = models.ForeignKey(Customers,null=True)
+    schedule_id = models.ForeignKey(Schedule, null=True)
+    quantity = models.IntegerField(null=True)
+    timestamp = models.TimeField(default=datetime.date.today())
+
 class OrderedSeats(models.Model):
     order_id = models.ForeignKey(Order, null=True)
     schedule_id = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
     seat = models.ForeignKey(Seat, null=True)
 
-
 class Tickets(models.Model):
     order_id = models.ForeignKey(Order, null=True)
-

@@ -3,13 +3,7 @@
 {% block content %}
 
 <div class="container">
-
-    {% if user.is_authenticated %}
-        <br>
-        <a href="{% url 'buy' %}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Buy a ticket</a>
-    {% endif %}
-
-    <br><br>
+    <br>
     <input class="form-control" id="myInput" type="text" placeholder="Search.."><br>
     <table class="table table-bordered">
         <thead>

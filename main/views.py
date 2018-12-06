@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Schedule, Movies, Hall, Seat
+from .models import Schedule, Movies, Hall, Seat, Customers, Order
 from django.contrib.auth.decorators import login_required
 
 
@@ -17,16 +17,27 @@ def buy(request, schedule_id):
 
 
 def check(request, schedule_id):
-    if request.method == 'POST':
-        #checks = request.POST['checks']
-        smth = request.POST.getlist('checks[]')
-        scheduled = Schedule.objects.filter(pk=schedule_id)
-        #checks = request.POST.getlist('checks')
-        return render(request, 'main/check.html', {'scheduled': scheduled, 'schedule_id': schedule_id, 'checks': smth})
+    checks = request.POST.getlist('checks[]')
+    scheduled = Schedule.objects.filter(pk=schedule_id)
+    price = Schedule.objects.values_list('price', flat=True).get(pk=schedule_id)
+    quantity = len(checks)
+    amount = price * quantity
+
+    return render(request, 'main/check.html', {'scheduled': scheduled,
+                    'schedule_id': schedule_id, 'checks': checks,
+                     'amount': amount, 'quantity': quantity, 'range': range(quantity)})
 
 
-def seat_select(request):
-    pass
+
+def checkout(request, schedule_id):
+    email = request.POST.get('email')
+    phone = request.POST.get('phone_number')
+    customers = Customers(email=email, phone_number=phone)
+    customers.save()
+
+    return render(request, 'main/checkout.html')
+
+
 
 
 def now_showing(request):
