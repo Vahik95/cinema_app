@@ -18,9 +18,11 @@ def buy(request, schedule_id):
 
 def check(request, schedule_id):
     if request.method == 'POST':
+        #checks = request.POST['checks']
+        smth = request.POST.getlist('checks[]')
         scheduled = Schedule.objects.filter(pk=schedule_id)
-        checks = request.POST.getlist('checks')
-        return render(request, 'main/check.html', {'scheduled': scheduled, 'schedule_id': schedule_id, 'checks': checks})
+        #checks = request.POST.getlist('checks')
+        return render(request, 'main/check.html', {'scheduled': scheduled, 'schedule_id': schedule_id, 'checks': smth})
 
 
 def seat_select(request):
