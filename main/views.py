@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Schedule, Movies, Hall, Seat, Customers, Order
 from django.contrib.auth.decorators import login_required
+import datetime
 
 
 def movies(request):
@@ -23,10 +24,15 @@ def check(request, schedule_id):
     quantity = len(checks)
     amount = price * quantity
 
+    #request.session['checks'] = checks
+    request.session['schedule_id'] = int(schedule_id)
+    request.session['price'] = int(price)
+    request.session['quantity'] = int(quantity)
+    request.session['amount'] = int(amount)
+
     return render(request, 'main/check.html', {'scheduled': scheduled,
                     'schedule_id': schedule_id, 'checks': checks,
-                     'amount': amount, 'quantity': quantity, 'range': range(quantity)})
-
+                         'amount': amount, 'quantity': quantity, 'range': range(quantity)})
 
 
 def checkout(request, schedule_id):
@@ -35,7 +41,17 @@ def checkout(request, schedule_id):
     customers = Customers(email=email, phone_number=phone)
     customers.save()
 
-    return render(request, 'main/checkout.html')
+    schedule_id_ = request.session.get('schedule_id')
+    #checks = request.session.get('checks')
+    price = request.session.get('price')
+    quantity = request.session.get('quantity')
+
+    schedule_id = Schedule.objects.get(pk=schedule_id_)
+    customer = Customers.objects.get(pk=customers.id)
+    order = Order(customer_id=customer, schedule_id=schedule_id, quantity=quantity, timestamp=datetime.datetime.now())
+    order.save()
+
+    return render(request, 'main/checkout.html', {'price': price, 'quantity': quantity})
 
 
 
