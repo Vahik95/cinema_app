@@ -15,7 +15,7 @@ class Movies(models.Model):
 
 
 class Hall(models.Model):
-    name = models.TextField(max_length=20, null=True)
+    name = models.TextField(max_length=20, primary_key=True, null=False)
     capacity = models.IntegerField(null=True)
 
     def __str__(self):
@@ -37,7 +37,7 @@ class Schedule(models.Model):
 
 
 class Seat(models.Model):
-    hall_id = models.ForeignKey(Hall, on_delete=models.CASCADE)
+    hall_id = models.ForeignKey(Hall, null=True, on_delete=models.CASCADE)
     row = models.IntegerField(null=True)
     seat = models.IntegerField(null=True)
 
@@ -50,6 +50,9 @@ class Customers(models.Model):
     email =  models.TextField(max_length=50, null=True)
     phone_number = models.TextField(max_length=15, null=True)
 
+    def __str__(self):
+        return self.email + '   |   ' + self.phone_number
+
 
 class Order(models.Model):
     customer_id = models.ForeignKey(Customers,null=True)
@@ -57,10 +60,17 @@ class Order(models.Model):
     quantity = models.IntegerField(null=True)
     timestamp = models.TimeField(default=datetime.date.today())
 
+    def __str__(self):
+        return str(self.customer_id) + '   |   ' + str(self.timestamp)
+
 class OrderedSeats(models.Model):
-    order_id = models.ForeignKey(Order, null=True)
-    schedule_id = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
-    seat = models.ForeignKey(Seat, null=True)
+    order_id = models.ForeignKey(Order, null=True, on_delete=models.CASCADE)
+    schedule_id = models.ForeignKey(Schedule, null=True, on_delete=models.CASCADE)
+    seat = models.ForeignKey(Seat, null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.seat)
+
 
 class Tickets(models.Model):
     order_id = models.ForeignKey(Order, null=True)

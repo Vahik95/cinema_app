@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Schedule, Movies, Hall, Seat, Customers, Order
+from .models import Schedule, Movies, Hall, Seat, Customers, Order, OrderedSeats
 from django.contrib.auth.decorators import login_required
 import datetime
 
@@ -19,12 +19,14 @@ def buy(request, schedule_id):
 
 def check(request, schedule_id):
     checks = request.POST.getlist('checks[]')
+    checks = map(str, checks)
+    checks = list(checks)
     scheduled = Schedule.objects.filter(pk=schedule_id)
     price = Schedule.objects.values_list('price', flat=True).get(pk=schedule_id)
     quantity = len(checks)
     amount = price * quantity
 
-    #request.session['checks'] = checks
+    request.session['checks'] = checks
     request.session['schedule_id'] = int(schedule_id)
     request.session['price'] = int(price)
     request.session['quantity'] = int(quantity)
@@ -36,22 +38,31 @@ def check(request, schedule_id):
 
 
 def checkout(request, schedule_id):
+    schedule_id_ = request.session.get('schedule_id')
+    checks = request.session.get('checks')
+    price = request.session.get('price')
+    quantity = request.session.get('quantity')
+
     email = request.POST.get('email')
     phone = request.POST.get('phone_number')
     customers = Customers(email=email, phone_number=phone)
     customers.save()
-
-    schedule_id_ = request.session.get('schedule_id')
-    #checks = request.session.get('checks')
-    price = request.session.get('price')
-    quantity = request.session.get('quantity')
 
     schedule_id = Schedule.objects.get(pk=schedule_id_)
     customer = Customers.objects.get(pk=customers.id)
     order = Order(customer_id=customer, schedule_id=schedule_id, quantity=quantity, timestamp=datetime.datetime.now())
     order.save()
 
-    return render(request, 'main/checkout.html', {'price': price, 'quantity': quantity})
+    for i in checks:
+        full_seat =  i.split('-')
+
+        ord = Order.objects.get(pk=order.id)
+        seat = Seat.objects.get(hall_id=schedule_id.hall, row = full_seat[0], seat=full_seat[1])
+        ordered_seats = OrderedSeats(order_id=ord, schedule_id=schedule_id, seat=seat)
+        ordered_seats.save()
+
+
+    return render(request, 'main/checkout.html', {'price': price, 'quantity': quantity, 'checks': checks, 'a': order.id })
 
 
 
