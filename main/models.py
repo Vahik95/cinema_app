@@ -9,6 +9,7 @@ class Movies(models.Model):
     language = models.TextField(null=True)
     length = models.IntegerField(null=True)
     rating = models.IntegerField()
+    image = models.ImageField(upload_to='media/', blank=True)
 
     def __str__(self):
         return self.name

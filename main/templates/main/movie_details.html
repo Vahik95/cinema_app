@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{%for detail in movie.all%}
+<h1>{{detail.name}}</h1>
+<h2>Genre: {{detail.genre}}</h2>
+<h3>Language: {{detail.language}}</h3>
+<h3>Length: {{detail.length}}</h3>
+<h3>Rating: {{detail.rating}}</h3>
+
+
+{%endfor%}
+{% endblock %}

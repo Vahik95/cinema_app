@@ -9,9 +9,23 @@ def movies(request):
     return render(request, 'main/movies.html', {'films': films})
 
 
+def movie_details(request, movie_id):
+    movie = Movies.objects.filter(pk=movie_id)
+
+    return render(request, 'main/movie_details.html', {'movie':movie})
+
+
 def buy(request, schedule_id):
     if request.method == 'POST':
-        return render(request, 'main/buy_final.html', {'schedule_id': schedule_id})
+        ordered_seats = OrderedSeats.objects.values_list('seat', flat=True).filter(schedule_id=schedule_id)
+        not_free = []
+        ordered = []
+        for i in ordered_seats:
+            seats = Seat.objects.values_list('row', 'seat').filter(pk=i)
+            not_free.append(seats[0])
+        for j in not_free:
+            ordered.append(str(j[0])+ '-' + str(j[1]))
+        return render(request, 'main/buy_final.html', {'schedule_id': schedule_id, 'ord':ordered})
     else:
         scheduled = Schedule.objects.filter(pk=schedule_id)
         return render(request, 'main/buy.html', {'scheduled': scheduled, 'schedule_id': schedule_id})
