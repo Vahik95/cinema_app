@@ -15,23 +15,11 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <ul class="navbar-nav navbar-right">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home</a>
-            </li>
-            <li class="nav-item active">
               <a class="nav-link" href="{% url 'movies' %}">Movies</a>
             </li>
             <li class="nav-item active">
               <a class="nav-link" href="{% url 'now_showing' %}">Now Showing</a>
             </li>
-
-            {% if user.is_authenticated %}
-
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Add Movie</a>
-            </li>
-
-            {% endif %}
-
         </ul>
     <ul class="navbar-nav ml-auto">
             {% if user.is_authenticated %}

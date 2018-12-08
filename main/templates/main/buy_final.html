@@ -14,6 +14,9 @@
     <div class="screen-side">
       <div class="screen">Screen</div>
       <h3 class="select-text">Please select a seat</h3>
+      {% if error %}
+          <h2>{{error}}</h2>
+      {% endif %}
     </div>
     <div class="exit exit--front">
     </div>

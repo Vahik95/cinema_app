@@ -2,11 +2,29 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Schedule, Movies, Hall, Seat, Customers, Order, OrderedSeats
 from django.contrib.auth.decorators import login_required
 import datetime
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-
+"""
 def movies(request):
     films = Movies.objects.all()
     return render(request, 'main/movies.html', {'films': films})
+"""
+
+def movies(request):
+    movies_list = Movies.objects.all()
+    paginator = Paginator(movies_list, 3) # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    try:
+        movies = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        movies = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        movies = paginator.page(paginator.num_pages)
+
+    return render(request, 'main/movies.html', {'films': movies})
 
 
 def movie_details(request, movie_id):
@@ -25,6 +43,7 @@ def buy(request, schedule_id):
             not_free.append(seats[0])
         for j in not_free:
             ordered.append(str(j[0])+ '-' + str(j[1]))
+        request.session['ordered'] = ordered
         return render(request, 'main/buy_final.html', {'schedule_id': schedule_id, 'ord':ordered})
     else:
         scheduled = Schedule.objects.filter(pk=schedule_id)
@@ -33,6 +52,12 @@ def buy(request, schedule_id):
 
 def check(request, schedule_id):
     checks = request.POST.getlist('checks[]')
+    if len(checks) == 0:
+        error = 'You should select at least 1 seat !!!'
+        ordered = request.session.get('ordered')
+
+        return render(request, 'main/buy_final.html', {'schedule_id': schedule_id, 'ord':ordered, 'error':error})
+
     checks = map(str, checks)
     checks = list(checks)
     scheduled = Schedule.objects.filter(pk=schedule_id)
