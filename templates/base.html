@@ -21,24 +21,6 @@
               <a class="nav-link" href="{% url 'now_showing' %}">Now Showing</a>
             </li>
         </ul>
-    <ul class="navbar-nav ml-auto">
-            {% if user.is_authenticated %}
-            <li class="nav-item active">
-                <a class="nav-link" href="#" onclick="document.getElementById('logout').submit()">Logout</a>
-                <form id="logout" method="POST" action="{% url 'accounts:logout' %}">
-                    {% csrf_token %}
-                    <input type="hidden">
-                </form>
-            </li>
-            {% else %}
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'accounts:signup' %}">Signup</a>
-            </li>
-            {% endif %}
-        </ul>
     </nav>
 {% block content %}
 {% endblock %}

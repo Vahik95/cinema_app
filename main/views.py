@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Schedule, Movies, Hall, Seat, Customers, Order, OrderedSeats
+from .models import Schedule, Movies, Hall, Seat, Customers, Order, OrderedSeats, Tickets
 from django.contrib.auth.decorators import login_required
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 """
 def movies(request):
@@ -31,6 +32,11 @@ def movie_details(request, movie_id):
     movie = Movies.objects.filter(pk=movie_id)
 
     return render(request, 'main/movie_details.html', {'movie':movie})
+
+
+def now_showing(request):
+    scheduled = Schedule.objects.all().order_by('date')
+    return render(request, 'main/now_showing.html', {'scheduled': scheduled})
 
 
 def buy(request, schedule_id):
@@ -100,15 +106,13 @@ def checkout(request, schedule_id):
         ordered_seats = OrderedSeats(order_id=ord, schedule_id=schedule_id, seat=seat)
         ordered_seats.save()
 
+        ticket = Tickets(order_id=ord, schedule_id=schedule_id, seat=seat, customer_id=customers)
+        ticket.save()
 
-    return render(request, 'main/checkout.html', {'price': price, 'quantity': quantity, 'checks': checks, 'a': order.id })
+        tickets = Tickets.objects.all().filter(order_id=ord)
 
+    return render(request, 'main/checkout.html', {'price': price, 'quantity': quantity*'x', 'checks': checks, 'id': order.id, 'movie':schedule_id, 'tickets':tickets })
 
-
-
-def now_showing(request):
-    scheduled = Schedule.objects.all().order_by('date')
-    return render(request, 'main/now_showing.html', {'scheduled': scheduled})
 
 
 """

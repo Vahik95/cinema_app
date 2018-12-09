@@ -52,7 +52,7 @@ class Customers(models.Model):
     phone_number = models.TextField(max_length=15, null=True)
 
     def __str__(self):
-        return self.email + '   |   ' + self.phone_number
+        return str(self.email) + '   |   ' + str(self.phone_number)
 
 
 class Order(models.Model):
@@ -74,4 +74,7 @@ class OrderedSeats(models.Model):
 
 
 class Tickets(models.Model):
-    order_id = models.ForeignKey(Order, null=True)
+    order_id = models.ForeignKey(Order, null=True, on_delete=models.CASCADE)
+    schedule_id = models.ForeignKey(Schedule, null=True, on_delete=models.CASCADE)
+    seat = models.ForeignKey(Seat, null=True, on_delete=models.CASCADE)
+    customer_id = models.ForeignKey(Customers,null=True)

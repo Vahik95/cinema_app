@@ -20,7 +20,7 @@
       {% for movie in scheduled.all %}
 
       <tr>
-        <td>{{ movie.movie}}</td>
+        <td><a class="text-danger" href="{% url 'movie_details' movie.movie.id %}">{{ movie.movie}}</a></td>
         <td>{{ movie.start_time }}</td>
         <td>{{ movie.end_time }}</td>
         <td>{{ movie.date }}</td>

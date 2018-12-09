@@ -3,11 +3,36 @@
 {% block content %}
 
 <div class="container">
-  <h1>Done</h1>
-  {{ price }}
-  {{ quantity }}
-  {{checks}}
-  {{a}}
+  <h1>Tickets</h1>
+  {%for t in tickets.all%}
+  <div class="alert alert-success">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Ticket id</th>
+          <th>Movie</th>
+          <th>Hall</th>
+          <th>Start time</th>
+          <th>End Time</th>
+          <th>Price</th>
+          <th>Row|Seat</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{t.id}}</td>
+          <td>{{t.schedule_id.movie}}</td>
+          <td>{{t.schedule_id.hall}}</td>
+          <td>{{t.schedule_id.start_time}}</td>
+          <td>{{t.schedule_id.end_time}}</td>
+          <td>{{t.schedule_id.price}}</td>
+          <td>{{t.seat}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  {%endfor%}
 
 </div>
 {% endblock %}
