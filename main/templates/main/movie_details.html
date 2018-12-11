@@ -3,10 +3,12 @@
 {% block content %}
 {%for detail in movie.all%}
 <h1>{{detail.name}}</h1>
-<h2>Genre: {{detail.genre}}</h2>
-<h3>Language: {{detail.language}}</h3>
-<h3>Length: {{detail.length}}</h3>
-<h3>Rating: {{detail.rating}}</h3>
+<img  class="img-rounded"  width="304" height="236" src="{{ detail.image.url }}" alt="Card image" class="img-fluid">
+<h6>Genre:  {{detail.genre.all|join:", "}}</h6>
+<h6> Language: {{detail.language}}</h6>
+<h6>Length: {{detail.length}}</h6>
+<h6> Rating: {{detail.rating}}</h6>
+<p>{{detail.description}}</p>
 
 
 {%endfor%}

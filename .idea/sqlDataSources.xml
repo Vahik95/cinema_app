@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDataSourceStorage">
+    <option name="dataSources">
+      <list>
+        <State>
+          <option name="id" value="bdf2e4b1-0009-4c01-9f21-ea7f0e7d892e" />
+          <option name="name" value="DDL data source" />
+          <option name="urls">
+            <array />
+          </option>
+          <option name="remarks" value="smth" />
+        </State>
+      </list>
+    </option>
+  </component>
+</project>

@@ -12,7 +12,7 @@ def movies(request):
 """
 
 def movies(request):
-    movies_list = Movies.objects.all()
+    movies_list = Movies.objects.all().order_by('-id')
     paginator = Paginator(movies_list, 3) # Show 25 contacts per page
 
     page = request.GET.get('page')
@@ -30,7 +30,6 @@ def movies(request):
 
 def movie_details(request, movie_id):
     movie = Movies.objects.filter(pk=movie_id)
-
     return render(request, 'main/movie_details.html', {'movie':movie})
 
 
@@ -87,11 +86,12 @@ def checkout(request, schedule_id):
     checks = request.session.get('checks')
     price = request.session.get('price')
     quantity = request.session.get('quantity')
-
     email = request.POST.get('email')
     phone = request.POST.get('phone_number')
-    customers = Customers(email=email, phone_number=phone)
-    customers.save()
+    #Creates new customer if not exist
+    customers, created = Customers.objects.get_or_create(email=email, phone_number=phone)
+    if not created:
+        customers.save()
 
     schedule_id = Schedule.objects.get(pk=schedule_id_)
     customer = Customers.objects.get(pk=customers.id)

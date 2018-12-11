@@ -3,12 +3,20 @@ from django.contrib.auth.models import User
 import datetime
 
 
+class Genre(models.Model):
+    name = models.TextField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
 class Movies(models.Model):
     name = models.TextField(max_length=200)
-    genre = models.TextField(null=True)
     language = models.TextField(null=True)
+    description = models.TextField(max_length=1500, null=True)
     length = models.IntegerField(null=True)
     rating = models.IntegerField()
+    genre = models.ManyToManyField(Genre)
     image = models.ImageField(upload_to='media/', blank=True)
 
     def __str__(self):
@@ -24,8 +32,8 @@ class Hall(models.Model):
 
 
 class Schedule(models.Model):
-    movie = models.ForeignKey(Movies)
-    hall = models.ForeignKey(Hall)
+    movie = models.ForeignKey(Movies, on_delete=models.CASCADE)
+    hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
     start_time = models.TimeField(null=True)
     end_time = models.TimeField(null=True)
     date = models.DateField(null=True)
