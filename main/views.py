@@ -1,15 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Schedule, Movies, Hall, Seat, Customers, Order, OrderedSeats, Tickets
+from .models import Schedules, Movies, Halls, Seats, Customers, Orders, OrderedSeats, Tickets
 from django.contrib.auth.decorators import login_required
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-
-"""
-def movies(request):
-    films = Movies.objects.all()
-    return render(request, 'main/movies.html', {'films': films})
-"""
 
 def movies(request):
     movies_list = Movies.objects.all().order_by('-id')
@@ -34,24 +28,24 @@ def movie_details(request, movie_id):
 
 
 def now_showing(request):
-    scheduled = Schedule.objects.all().order_by('date')
+    scheduled = Schedules.objects.all().order_by('date')
     return render(request, 'main/now_showing.html', {'scheduled': scheduled})
 
 
 def buy(request, schedule_id):
     if request.method == 'POST':
-        ordered_seats = OrderedSeats.objects.values_list('seat', flat=True).filter(schedule_id=schedule_id)
+        ordered_seats = OrderedSeats.objects.values_list('seat', flat=True).filter(order_id__schedule_id=schedule_id)
         not_free = []
         ordered = []
         for i in ordered_seats:
-            seats = Seat.objects.values_list('row', 'seat').filter(pk=i)
+            seats = Seats.objects.values_list('row', 'seat').filter(pk=i)
             not_free.append(seats[0])
         for j in not_free:
             ordered.append(str(j[0])+ '-' + str(j[1]))
         request.session['ordered'] = ordered
         return render(request, 'main/buy_final.html', {'schedule_id': schedule_id, 'ord':ordered})
     else:
-        scheduled = Schedule.objects.filter(pk=schedule_id)
+        scheduled = Schedules.objects.filter(pk=schedule_id)
         return render(request, 'main/buy.html', {'scheduled': scheduled, 'schedule_id': schedule_id})
 
 
@@ -65,8 +59,8 @@ def check(request, schedule_id):
 
     checks = map(str, checks)
     checks = list(checks)
-    scheduled = Schedule.objects.filter(pk=schedule_id)
-    price = Schedule.objects.values_list('price', flat=True).get(pk=schedule_id)
+    scheduled = Schedules.objects.filter(pk=schedule_id)
+    price = Schedules.objects.values_list('price', flat=True).get(pk=schedule_id)
     quantity = len(checks)
     amount = price * quantity
 
@@ -93,32 +87,22 @@ def checkout(request, schedule_id):
     if not created:
         customers.save()
 
-    schedule_id = Schedule.objects.get(pk=schedule_id_)
+    schedule_id = Schedules.objects.get(pk=schedule_id_)
     customer = Customers.objects.get(pk=customers.id)
-    order = Order(customer_id=customer, schedule_id=schedule_id, quantity=quantity, timestamp=datetime.datetime.now())
+    order = Orders(customer_id=customer, schedule_id=schedule_id, quantity=quantity, timestamp=datetime.datetime.now())
     order.save()
 
     for i in checks:
         full_seat =  i.split('-')
 
-        ord = Order.objects.get(pk=order.id)
-        seat = Seat.objects.get(hall_id=schedule_id.hall, row = full_seat[0], seat=full_seat[1])
-        ordered_seats = OrderedSeats(order_id=ord, schedule_id=schedule_id, seat=seat)
+        ord = Orders.objects.get(pk=order.id)
+        seat = Seats.objects.get(hall_id=schedule_id.hall, row = full_seat[0], seat=full_seat[1])
+        ordered_seats = OrderedSeats(order_id=ord, seat=seat)
         ordered_seats.save()
 
-        ticket = Tickets(order_id=ord, schedule_id=schedule_id, seat=seat, customer_id=customers)
+        ticket = Tickets(order_id=ord, seat=seat)
         ticket.save()
 
         tickets = Tickets.objects.all().filter(order_id=ord)
 
     return render(request, 'main/checkout.html', {'price': price, 'quantity': quantity*'x', 'checks': checks, 'id': order.id, 'movie':schedule_id, 'tickets':tickets })
-
-
-
-"""
-def add_movie(request):
-    films = Movies.objects.all().filter()
-    hall = Hall.objects.all().filter()
-    time = TimeSlot.objects.all().filter()
-    return render(request, 'main/add_movie.html', {'films': films, 'halls': hall, 'time': time})
-"""

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 import datetime
 
 
-class Genre(models.Model):
+class Genres(models.Model):
     name = models.TextField(max_length=50)
 
     def __str__(self):
@@ -16,14 +16,14 @@ class Movies(models.Model):
     description = models.TextField(max_length=1500, null=True)
     length = models.IntegerField(null=True)
     rating = models.IntegerField()
-    genre = models.ManyToManyField(Genre)
+    genre = models.ManyToManyField(Genres)
     image = models.ImageField(upload_to='media/', blank=True)
 
     def __str__(self):
         return self.name
 
 
-class Hall(models.Model):
+class Halls(models.Model):
     name = models.TextField(max_length=20, primary_key=True, null=False)
     capacity = models.IntegerField(null=True)
 
@@ -31,9 +31,9 @@ class Hall(models.Model):
         return self.name
 
 
-class Schedule(models.Model):
+class Schedules(models.Model):
     movie = models.ForeignKey(Movies, on_delete=models.CASCADE)
-    hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
+    hall = models.ForeignKey(Halls, on_delete=models.CASCADE)
     start_time = models.TimeField(null=True)
     end_time = models.TimeField(null=True)
     date = models.DateField(null=True)
@@ -45,8 +45,8 @@ class Schedule(models.Model):
         return beautified
 
 
-class Seat(models.Model):
-    hall_id = models.ForeignKey(Hall, null=True, on_delete=models.CASCADE)
+class Seats(models.Model):
+    hall_id = models.ForeignKey(Halls, null=True, on_delete=models.CASCADE)
     row = models.IntegerField(null=True)
     seat = models.IntegerField(null=True)
 
@@ -63,26 +63,24 @@ class Customers(models.Model):
         return str(self.email) + '   |   ' + str(self.phone_number)
 
 
-class Order(models.Model):
+class Orders(models.Model):
     customer_id = models.ForeignKey(Customers,null=True)
-    schedule_id = models.ForeignKey(Schedule, null=True)
+    schedule_id = models.ForeignKey(Schedules, null=True)
     quantity = models.IntegerField(null=True)
     timestamp = models.TimeField(default=datetime.date.today())
 
     def __str__(self):
         return str(self.customer_id) + '   |   ' + str(self.timestamp)
 
+
 class OrderedSeats(models.Model):
-    order_id = models.ForeignKey(Order, null=True, on_delete=models.CASCADE)
-    schedule_id = models.ForeignKey(Schedule, null=True, on_delete=models.CASCADE)
-    seat = models.ForeignKey(Seat, null=True, on_delete=models.CASCADE)
+    order_id = models.ForeignKey(Orders, null=True, on_delete=models.CASCADE)
+    seat = models.ForeignKey(Seats, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.seat)
 
 
 class Tickets(models.Model):
-    order_id = models.ForeignKey(Order, null=True, on_delete=models.CASCADE)
-    schedule_id = models.ForeignKey(Schedule, null=True, on_delete=models.CASCADE)
-    seat = models.ForeignKey(Seat, null=True, on_delete=models.CASCADE)
-    customer_id = models.ForeignKey(Customers,null=True)
+    order_id = models.ForeignKey(Orders, null=True, on_delete=models.CASCADE)
+    seat = models.ForeignKey(Seats, null=True, on_delete=models.CASCADE)
