@@ -12,7 +12,7 @@ class Genres(models.Model):
 
 class Movies(models.Model):
     name = models.TextField(max_length=200)
-    language = models.TextField(null=True)
+    language = models.TextField(max_length=20,null=True)
     description = models.TextField(max_length=1500, null=True)
     length = models.IntegerField(null=True)
     rating = models.IntegerField()
@@ -84,3 +84,6 @@ class OrderedSeats(models.Model):
 class Tickets(models.Model):
     order_id = models.ForeignKey(Orders, null=True, on_delete=models.CASCADE)
     seat = models.ForeignKey(Seats, null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
