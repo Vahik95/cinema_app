@@ -64,8 +64,8 @@ class Customers(models.Model):
 
 
 class Orders(models.Model):
-    customer_id = models.ForeignKey(Customers,null=True)
-    schedule_id = models.ForeignKey(Schedules, null=True)
+    customer_id = models.ForeignKey(Customers,null=True, on_delete=models.CASCADE)
+    schedule_id = models.ForeignKey(Schedules, null=True, on_delete=models.CASCADE)
     quantity = models.IntegerField(null=True)
     timestamp = models.TimeField(default=datetime.date.today())
 
