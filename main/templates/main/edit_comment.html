@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="form-group">
+  <form method="POST" action="{% url 'edit_comment' comment.id %}">
+  {% csrf_token %}
+    <label for="comment">Comment:</label>
+    <textarea class="form-control" rows="5" id="comment" name="comment" required>{{comment.text}}</textarea>
+    <button type="submit" class="btn btn-success mt-1 pull-right">Save</button>
+    <input type="hidden" name="next" value="{{ request.GET.next }}">
+  </form>
+</div>
+
+{% endblock %}

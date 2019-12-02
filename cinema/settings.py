@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
+    'django_forms_bootstrap',
+    'users.apps.UsersConfig',
     'main',
 ]
 
@@ -123,3 +126,8 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR
 STATICFILES_DIRS = ["cinema-master/main/static"]
+
+
+LOGIN_REDIRECT_URL = 'movies'
+LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'movies'

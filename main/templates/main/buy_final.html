@@ -1,0 +1,324 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cinema</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+
+<body>
+  <div class="theatre">
+    <div class="screen-side">
+      <div class="screen">Screen</div>
+      <h3 class="select-text">Please select a seat</h3>
+      {% if error %}
+          <h2>{{error}}</h2>
+      {% endif %}
+    </div>
+    <div class="exit exit--front">
+    </div>
+    <form method="POST" action="{% url 'check' schedule_id %}">
+      {% csrf_token %}
+      <ol class="cabin">
+        <li class="row row--1">
+          <ol class="seats" type="A">
+            <li class="seat">
+              <input type="checkbox" id="1-1" name="checks[]" value="1-1" />
+              <label for="1-1">1-1</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="1-2" name="checks[]" value="1-2" />
+              <label for="1-2">1-2</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="1-3" name="checks[]" value="1-3" />
+              <label for="1-3">1-3</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="1-4" name="checks[]" value="1-4" />
+              <label for="1-4">1-4</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="1-5" name="checks[]" value="1-5" />
+              <label for="1-5">1-5</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="1-6" name="checks[]" value="1-6" />
+              <label for="1-6">1-6</label>
+            </li>
+          </ol>
+        </li>
+        <li class="row row--2">
+          <ol class="seats" type="A">
+            <li class="seat">
+              <input type="checkbox" id="2-1" name="checks[]" value="2-1" />
+              <label for="2-1">2-1</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="2-2" name="checks[]" value="2-2" />
+              <label for="2-2">2-2</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="2-3" name="checks[]" value="2-3" />
+              <label for="2-3">2-3</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="2-4" name="checks[]" value="2-4" />
+              <label for="2-4">2-4</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="2-5" name="checks[]" value="2-5" />
+              <label for="2-5">2-5</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="2-6" name="checks[]" value="2-6" />
+              <label for="2-6">2-6</label>
+            </li>
+          </ol>
+        </li>
+        <li class="row row--3">
+          <ol class="seats" type="A">
+            <li class="seat">
+              <input type="checkbox" id="3-1" name="checks[]" value="3-1" />
+              <label for="3-1">3-1</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="3-2" name="checks[]" value="3-2" />
+              <label for="3-2">3-2</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="3-3" name="checks[]" value="3-3" />
+              <label for="3-3">3-3</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="3-4" name="checks[]" value="3-4" />
+              <label for="3-4">3-4</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="3-5" name="checks[]" value="3-5" />
+              <label for="3-5">3-5</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="3-6" name="checks[]" value="3-6" />
+              <label for="3-6">3-6</label>
+            </li>
+          </ol>
+        </li>
+        <li class="row row--4">
+          <ol class="seats" type="A">
+            <li class="seat">
+              <input type="checkbox" id="4-1" name="checks[]" value="4-1" />
+              <label for="4-1">4-1</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="4-2" name="checks[]" value="4-2" />
+              <label for="4-2">4-2</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="4-3" name="checks[]" value="4-3" />
+              <label for="4-3">4-3</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="4-4" name="checks[]" value="4-4" />
+              <label for="4-4">4-4</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="4-5" name="checks[]" value="4-5" />
+              <label for="4-5">4-5</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="4-6" name="checks[]" value="4-6" />
+              <label for="4-6">4-6</label>
+            </li>
+          </ol>
+        </li>
+        <li class="row row--5">
+          <ol class="seats" type="A">
+            <li class="seat">
+              <input type="checkbox" id="5-1" name="checks[]" value="5-1" />
+              <label for="5-1">5-1</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="5-2" name="checks[]" value="5-2" />
+              <label for="5-2">5-2</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="5-3" name="checks[]" value="5-3" />
+              <label for="5-3">5-3</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="5-4" name="checks[]" value="5-4" />
+              <label for="5-4">5-4</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="5-5" name="checks[]" value="5-5" />
+              <label for="5-5">5-5</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="5-6" name="checks[]" value="5-6" />
+              <label for="5-6">5-6</label>
+            </li>
+          </ol>
+        </li>
+        <li class="row row--6">
+          <ol class="seats" type="A">
+            <li class="seat">
+              <input type="checkbox" id="6-1" name="checks[]" value="6-1" />
+              <label for="6-1">6-1</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="6-2" name="checks[]" value="6-2" />
+              <label for="6-2">6-2</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="6-3" name="checks[]" value="6-3" />
+              <label for="6-3">6-3</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="6-4" name="checks[]" value="6-4" />
+              <label for="6-4">6-4</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="6-5" name="checks[]" value="6-5" />
+              <label for="6-5">6-5</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="6-6" name="checks[]" value="6-6" />
+              <label for="6-6">6-6</label>
+            </li>
+          </ol>
+        </li>
+        <li class="row row--7">
+          <ol class="seats" type="A">
+            <li class="seat">
+              <input type="checkbox" id="7-1" name="checks[]" value="7-1" />
+              <label for="7-1">7-1</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="7-2" name="checks[]" value="7-2" />
+              <label for="7-2">7-2</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="7-3" name="checks[]" value="7-3" />
+              <label for="7-3">7-3</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="7-4" name="checks[]" value="7-4" />
+              <label for="7-4">7-4</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="7-5" name="checks[]" value="7-5" />
+              <label for="7-5">7-5</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="7-6" name="checks[]" value="7-6" />
+              <label for="7-6">7-6</label>
+            </li>
+          </ol>
+        </li>
+        <li class="row row--8">
+          <ol class="seats" type="A">
+            <li class="seat">
+              <input type="checkbox" id="8-1" name="checks[]" value="8-1" />
+              <label for="8-1">8-1</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="8-2" name="checks[]" value="8-2" />
+              <label for="8-2">8-2</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="8-3" name="checks[]" value="8-3" />
+              <label for="8-3">8-3</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="8-4" name="checks[]" value="8-4" />
+              <label for="8-4">8-4</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="8-5" name="checks[]" value="8-5" />
+              <label for="8-5">8-5</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="8-6" name="checks[]" value="8-6" />
+              <label for="8-6">8-6</label>
+            </li>
+          </ol>
+        </li>
+        <li class="row row--9">
+          <ol class="seats" type="A">
+            <li class="seat">
+              <input type="checkbox" id="9-1" name="checks[]" value="9-1" />
+              <label for="9-1">9-1</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="9-2" name="checks[]" value="9-2" />
+              <label for="9-2">9-2</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="9-3" name="checks[]" value="9-3" />
+              <label for="9-3">9-3</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="9-4" name="checks[]" value="9-4" />
+              <label for="9-4">9-4</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="9-5" name="checks[]" value="9-5" />
+              <label for="9-5">9-5</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="9-6" name="checks[]" value="9-6" />
+              <label for="9-6">9-6</label>
+            </li>
+          </ol>
+        </li>
+        <li class="row row--10">
+          <ol class="seats" type="A">
+            <li class="seat">
+              <input type="checkbox" id="10-1" name="checks[]" value="10-1" />
+              <label for="10-1">10-1</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="10-2" name="checks[]" value="10-2" />
+              <label for="10-2">10-2</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="10-3" name="checks[]" value="10-3" />
+              <label for="10-3">10-3</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="10-4" name="checks[]" value="10-4" />
+              <label for="10-4">10-4</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="10-5" name="checks[]" value="10-5" />
+              <label for="10-5">10-5</label>
+            </li>
+            <li class="seat">
+              <input type="checkbox" id="10-6" name="checks[]" value="10-6" />
+              <label for="10-6">10-6</label>
+            </li>
+          </ol>
+        </li>
+      </ol>
+      <br>
+      <button type="submit" style="height:35px;width:200px;font-weight:bold;float:right;">Continue</button>
+      <br><br>
+    </form>
+
+    {% for ordered in ord %}
+    <script>
+      document.getElementById("{{ordered}}").setAttribute("disabled", "True");
+    </script>
+    {% endfor %}
+
+    <div class="exit exit--back">
+    </div>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+{% extends 'task/base_new.html' %}
+{% load static %}
+{% load bootstrap_tags %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-11">
+    <!-- start page title -->
+    <div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+          <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+              <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
+              <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
+              <li class="breadcrumb-item active">Account</li>
+            </ol>
+          </div>
+          <h4 class="page-title">Account</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+
+      <div class="col-xl-4 col-lg-5">
+        <div class="card text-center">
+          <div class="card-body">
+            <img src="{% static 'assets_new/images/users/avatar-1.jpg' %}" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image">
+
+            <h4 class="mb-0 mt-2">{{ user.get_username }}</h4>
+
+            <div class="text-left mt-3">
+              <p class="text-muted mb-2 font-13 text-center"><strong>User Since :</strong> <span class="ml-2"> 03/12/19 </span></p>
+            </div>
+
+          </div> <!-- end card-body -->
+        </div> <!-- end card -->
+
+      </div> <!-- end col-->
+
+      <div class="col-xl-8 col-lg-7">
+        <div class="card">
+          <div class="card-body">
+            <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+              <li class="nav-item">
+                <a href="#settings" data-toggle="tab" aria-expanded="true" class="nav-link rounded-0 active">
+                  Settings
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#billing" data-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
+                  Billing
+                </a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane show active" id="settings">
+                <div class="row justify-content-center">
+                  <ul class="nav nav-pills flex-lg-column">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Your Profile</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="password-tab" data-toggle="tab" href="#password" role="tab" aria-controls="password" aria-selected="false">Password</a>
+                    </li>
+                  </ul>
+                  <div class="col-xl-8 col-lg-9">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="tab-content">
+                          <div class="tab-pane fade show active" role="tabpanel" id="profile" aria-labelledby="profile-tab">
+                            <form form method="POST" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              {{ u_form|as_bootstrap }}
+                              <div class="row justify-content-end">
+                                <button class="btn btn-outline-info" type="submit" onClick="makeLower()" name="update">Update</button>
+                              </div>
+                            </form>
+                            <div class="custom-control custom-switch mb-1">
+                              <input type="radio" class="custom-control-input" name="color-scheme-mode" value="light" id="light-mode-check"
+                                checked />
+                              <label class="custom-control-label" for="light-mode-check">Light Mode</label>
+                            </div>
+
+                            <div class="custom-control custom-switch mb-1">
+                              <input type="radio" class="custom-control-input" name="color-scheme-mode" value="dark" id="dark-mode-check" />
+                              <label class="custom-control-label" for="dark-mode-check">Dark Mode</label>
+                            </div>
+                          </div>
+                          <div class="tab-pane fade" role="tabpanel" id="password" aria-labelledby="password-tab">
+                            <form method="post">
+                              {% csrf_token %}
+                              {{ form|as_bootstrap }}
+                              <div class="row justify-content-end">
+                                <button class="btn btn-outline-info" type="submit" name="change_password">Save changes</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <!-- end settings content-->
+
+              <div class="tab-pane" id="billing">
+              </div> <!-- end tab-pane -->
+              <!-- end about me section content -->
+
+            </div> <!-- end tab-content -->
+          </div> <!-- end card body -->
+        </div> <!-- end card -->
+      </div> <!-- end col -->
+    </div>
+  </div>
+</div>
+<!-- end row-->
+
+{% endblock content %}

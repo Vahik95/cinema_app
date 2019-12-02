@@ -1,0 +1,50 @@
+{% extends 'task/base.html' %}
+{% load bootstrap_tags %}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    {% if messages %}
+      {% for message in messages %}
+      <div id="alert" class="col-md-11 alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert" style="color:red;">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <div class="col-lg-3 mb-3">
+      <ul class="nav nav-tabs flex-lg-column">
+        <li class="nav-item">
+          <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Your Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="password-tab" data-toggle="tab" href="#password" role="tab" aria-controls="password" aria-selected="false">Password</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-xl-8 col-lg-9">
+      <div class="card">
+        <div class="card-body">
+          <div class="tab-content">
+            <div class="tab-pane fade show active" role="tabpanel" id="profile" aria-labelledby="profile-tab">
+              <form form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ u_form|as_bootstrap }}
+                <div class="row justify-content-end">
+                  <button class="btn btn-outline-info" type="submit" onClick="makeLower()" name="update">Update</button>
+                </div>
+              </form>
+            </div>
+            <div class="tab-pane fade" role="tabpanel" id="password" aria-labelledby="password-tab">
+              <form method="post">
+                {% csrf_token %}
+                {{ form|as_bootstrap }}
+                <div class="row justify-content-end">
+                  <button class="btn btn-outline-info" type="submit" name="change_password">Save changes</button>
+                </div>
+              </form>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content%}

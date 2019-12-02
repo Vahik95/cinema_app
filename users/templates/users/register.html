@@ -1,0 +1,51 @@
+{% load static %}
+{% load bootstrap_tags %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="{% static 'assets/img/favicon.ico' %}" rel="icon" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Gothic+A1" rel="stylesheet">
+  <link href="{% static 'assets/css/theme.css' %}" rel="stylesheet" type="text/css" media="all" />
+
+  {% if title %}
+  <title>MVP - {{ title }}</title>
+  {% else %}
+  <title>MVP</title>
+  {% endif %}
+
+</head>
+
+<body>
+  <div class="main-container fullscreen">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-5 col-lg-6 col-md-7">
+          <div class="text-center">
+            <h1 class="h2">Create account</h1>
+            <hr>
+            <form method="post">
+              {% csrf_token %}
+              {{ form|as_bootstrap }}
+              <button class="btn btn-lg btn-block btn-primary" role="button" type="submit" onClick="makeLower()">
+                Create account
+              </button>
+              <small>Do you have an account? <a href="{% url 'login' %}">Log in</a>
+              </small>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript" src="{% static 'assets/js/custom.js' %}"></script>
+</body>
+
+</html>
