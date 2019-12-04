@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
-from .models import Genres,Movies,Comments, Cinemas, CinemaComments, Schedules, Halls, Seats, Customers, Orders, OrderedSeats, Tickets
+from .models import Genres,Movies,Comments, Cinemas,CinemaRating, UserRatings, CinemaComments, Schedules, Halls, Seats, Customers, Orders, OrderedSeats, Tickets
 from django.contrib.auth.decorators import login_required
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -167,6 +167,7 @@ def cinemas(request):
 def cinema_about(request, cinema_id):
     cinema = Cinemas.objects.get(id=cinema_id)
     comments = CinemaComments.objects.filter(cinema = cinema).order_by('-created_at')
+    rating = UserRatings.objects.filter(user=request.user, cinema=cinema_id).count()
 
     if request.method == 'POST':
         if request.POST['comment']:
@@ -179,10 +180,24 @@ def cinema_about(request, cinema_id):
 
     context = {
         'cinema': cinema,
-        'comments': comments
+        'comments': comments,
+        'rating': rating
     }
 
     return render(request, 'main/cinema_about.html', context)
+
+def rate_cinema(request, cinema_id):
+    cinema = Cinemas.objects.get(id=cinema_id)
+
+    if request.method == 'POST':
+        rating = UserRatings()
+        rating.cinema = cinema
+        rating.user = request.user
+        rating.rating = request.POST['rating']
+        rating.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
 
 @login_required
 def edit_cinema_comment(request, comment_id):

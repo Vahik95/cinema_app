@@ -55,6 +55,28 @@ class Cinemas(models.Model):
     class Meta:
         verbose_name_plural = "Cinemas"
 
+class CinemaRating(models.Model):
+    cinema = models.ForeignKey(Cinemas, on_delete=models.CASCADE)
+    rating = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return str(self.rating)
+
+    class Meta:
+        verbose_name_plural = "CinemaRatings"
+
+class UserRatings(models.Model):
+    cinema = models.ForeignKey(Cinemas, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    rating = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return str(self.rating)
+
+    class Meta:
+        verbose_name_plural = "UserRatings"
+
+
 class CinemaComments(models.Model):
     cinema = models.ForeignKey(Cinemas, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
