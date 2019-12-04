@@ -7,7 +7,7 @@
   <h1>{{cinema.name}}</h1>
   <img class="img-rounded" src="{{ cinema.image.url }}" alt="Card image" style="max-width:270px;">
   <h6> Address: {{ cinema.address}}</h6>
-  <h6> Rating: - </h6>
+  <h6> Rating: {% if cinema.rating %}{{cinema.rating}}{% else %}-{% endif %} </h6>
 
   {% if user.is_authenticated %}
     {% if rating != 1 %}

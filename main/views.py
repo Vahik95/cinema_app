@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
-from .models import Genres,Movies,Comments, Cinemas,CinemaRating, UserRatings, CinemaComments, Schedules, Halls, Seats, Customers, Orders, OrderedSeats, Tickets
+from .models import Genres,Movies,Comments, Cinemas, UserRatings, CinemaComments, Schedules, Halls, Seats, Customers, Orders, OrderedSeats, Tickets
 from django.contrib.auth.decorators import login_required
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -167,7 +167,10 @@ def cinemas(request):
 def cinema_about(request, cinema_id):
     cinema = Cinemas.objects.get(id=cinema_id)
     comments = CinemaComments.objects.filter(cinema = cinema).order_by('-created_at')
-    rating = UserRatings.objects.filter(user=request.user, cinema=cinema_id).count()
+    rating = ''
+
+    if request.user.is_authenticated:
+        rating = UserRatings.objects.filter(user=request.user, cinema=cinema_id).count()
 
     if request.method == 'POST':
         if request.POST['comment']:
@@ -188,6 +191,7 @@ def cinema_about(request, cinema_id):
 
 def rate_cinema(request, cinema_id):
     cinema = Cinemas.objects.get(id=cinema_id)
+    ratings = UserRatings.objects.filter(cinema=cinema)
 
     if request.method == 'POST':
         rating = UserRatings()
@@ -195,6 +199,16 @@ def rate_cinema(request, cinema_id):
         rating.user = request.user
         rating.rating = request.POST['rating']
         rating.save()
+        if ratings.count() == 1:
+            cinema.rating = request.POST['rating']
+            cinema.save()
+        elif ratings.count() > 1:
+            sum_of_all = 0
+            for cin_rating in ratings:
+                sum_of_all += cin_rating.rating
+                cinema.rating = sum_of_all/ratings.count()
+                cinema.save()
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 

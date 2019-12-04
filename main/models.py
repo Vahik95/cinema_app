@@ -48,23 +48,15 @@ class Cinemas(models.Model):
     name = models.CharField(max_length=150)
     image = models.ImageField(upload_to='media/',null=True, blank=True)
     address = models.TextField(max_length=200, null=True, blank=True)
+    rating = models.IntegerField(null=True, blank=True)
+
 
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name_plural = "Cinemas"
-
-class CinemaRating(models.Model):
-    cinema = models.ForeignKey(Cinemas, on_delete=models.CASCADE)
-    rating = models.IntegerField(null=True, blank=True)
-
-    def __str__(self):
-        return str(self.rating)
-
-    class Meta:
-        verbose_name_plural = "CinemaRatings"
-
+        
 class UserRatings(models.Model):
     cinema = models.ForeignKey(Cinemas, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
