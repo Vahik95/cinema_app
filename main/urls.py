@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^checkout/(?P<schedule_id>[0-9]+)/', views.checkout, name='checkout'),
     url(r'^now_showing', views.now_showing, name='now_showing'),
     url(r'^cinema_schedule/(?P<cinema_id>[0-9]+)/', views.cinema_schedule, name='cinema_schedule'),
+    url(r'^cinema_about(?P<cinema_id>[0-9]+)/', views.cinema_about, name='cinema_about'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

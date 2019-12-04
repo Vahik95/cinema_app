@@ -9,8 +9,9 @@
     <img class="card-img-top" src="{{ cinema.image.url }}" alt="Card image" class="img-fluid">
     <div class="card-body">
       <h4 class="card-title">{{ cinema.name }}</h4>
-      <p class="card-text">{{ movie.address}}</p>
-      <a href="{% url 'cinema_schedule' cinema.id %}" class="btn btn-info">Schedules</a>
+      <p class="card-text">{{ cinema.address}}</p>
+      <a href="{% url 'cinema_schedule' cinema.id %}" class="btn btn-success">Schedules</a>
+      <a href="{% url 'cinema_about' cinema.id %}" class="btn btn-info">About</a>
     </div>
   </div>
   {% endfor %}

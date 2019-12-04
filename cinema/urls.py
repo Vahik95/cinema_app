@@ -10,7 +10,9 @@ from users import views as user_views
 urlpatterns = [
     url(r'^', include('main.urls')),
     path('edit_comment/<int:comment_id>', views.edit_comment, name='edit_comment'),
+    path('edit_cinema_comment/<int:comment_id>', views.edit_cinema_comment, name='edit_cinema_comment'),
     path('delete_comment/<int:comment_id>', views.delete_comment, name='delete_comment'),
+    path('delete_cinema_comment/<int:comment_id>', views.delete_cinema_comment, name='delete_cinema_comment'),
     url(r'^movies/', include('main.urls')),
     url(r'^admin/', admin.site.urls),
     path('create_seats/', views.create_seats, name='create_seats'),

@@ -43,6 +43,7 @@ class Comments(models.Model):
     class Meta:
         verbose_name_plural = "Comments"
 
+
 class Cinemas(models.Model):
     name = models.CharField(max_length=150)
     image = models.ImageField(upload_to='media/',null=True, blank=True)
@@ -54,6 +55,18 @@ class Cinemas(models.Model):
     class Meta:
         verbose_name_plural = "Cinemas"
 
+class CinemaComments(models.Model):
+    cinema = models.ForeignKey(Cinemas, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    text = models.TextField(max_length=1000)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        verbose_name_plural = "CinemaComments"
 
 class Halls(models.Model):
     cinema = models.ForeignKey(Cinemas, on_delete=models.CASCADE)

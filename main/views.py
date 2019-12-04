@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
-from .models import Genres,Movies,Comments, Cinemas, Schedules, Halls, Seats, Customers, Orders, OrderedSeats, Tickets
+from .models import Genres,Movies,Comments, Cinemas, CinemaComments, Schedules, Halls, Seats, Customers, Orders, OrderedSeats, Tickets
 from django.contrib.auth.decorators import login_required
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -61,8 +61,9 @@ def edit_comment(request, comment_id):
     return render(request, 'main/edit_comment.html', context)
 
 def delete_comment(request, comment_id):
-    #user shopuld be checked here
     comment = Comments.objects.get(pk=comment_id)
+    if request.user != comment.user:
+        return redirect('movies')
     comment.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -162,6 +163,52 @@ def cinemas(request):
     }
 
     return render(request, 'main/cinemas.html', context)
+
+def cinema_about(request, cinema_id):
+    cinema = Cinemas.objects.get(id=cinema_id)
+    comments = CinemaComments.objects.filter(cinema = cinema).order_by('-created_at')
+
+    if request.method == 'POST':
+        if request.POST['comment']:
+            comment = CinemaComments()
+            comment.cinema = cinema
+            comment.user = request.user
+            comment.text = request.POST['comment']
+            comment.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    context = {
+        'cinema': cinema,
+        'comments': comments
+    }
+
+    return render(request, 'main/cinema_about.html', context)
+
+@login_required
+def edit_cinema_comment(request, comment_id):
+    comment = CinemaComments.objects.get(pk=comment_id)
+    if request.user != comment.user:
+        return redirect('movies')
+
+    context = {
+        'comment': comment
+    }
+    next = request.POST.get('next', '/')
+    if request.method == 'POST':
+        if request.POST['comment']:
+            comment.text = request.POST['comment']
+            comment.save()
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+
+    return render(request, 'main/edit_cinema_comment.html', context)
+
+def delete_cinema_comment(request, comment_id):
+    comment = CinemaComments.objects.get(pk=comment_id)
+    if request.user != comment.user:
+        return redirect('movies')
+    comment.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def create_seats(request):
     # red_hall = Halls.objects.get(name='Red')
