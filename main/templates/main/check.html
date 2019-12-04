@@ -39,7 +39,11 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="email">Email address:</label>
-              <input type="email" class="form-control" name="email" required>
+              {% if user.is_authenticated %}
+                <input type="email" class="form-control" name="email" value="{{user.email}}" required>
+              {% else %}
+                <input type="email" class="form-control" name="email" required>
+              {% endif %}
             </div>
             <div class="form-group">
               <label for="username">Phone Number:</label>
