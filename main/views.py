@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def movies(request):
     movies_list = Movies.objects.all().order_by('-id')
-    paginator = Paginator(movies_list, 3)
+    paginator = Paginator(movies_list, 6)
 
     page = request.GET.get('page')
     try:
